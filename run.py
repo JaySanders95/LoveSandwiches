@@ -42,33 +42,12 @@ def validate_data(values):
     try:
         [int(value) for value in values]
         if len(values) != 6:
-            raise ValueError(
-                f"Exactly 6 values required, you have provided {len(values)}"
-            )
+            raise ValueError(f"Exactly 6 values required, you have provided {len(values)}")
     except ValueError as e:
         print(f"Invalid data: {e}, please try again. \n")
         return False
 
     return True
-"""
-def update_sales_worksheet(data):
-    
-    #Update sales worksheet, add new row with the list data provided.
-    
-    print("updating sales worksheet... \n")
-    sales_worksheet = SHEET.worksheet("sales")
-    sales_worksheet.append_row(data)
-    print("sales worksheet updated successfully. \n")
-
-def update_surplus_data(data):
-    
-    #Update surplus data, add new row with the data from the user input.
-    
-    print("updating surplus data... \n")
-    surplus_worksheet = SHEET.worksheet("surplus")
-    surplus_worksheet.append_row(data)
-    print("surplus worksheet updated successfully. \n")
-"""
 
 def update_worksheet(data, worksheet):
     """
@@ -108,14 +87,27 @@ def get_last_5_entries_sales():
     list of lists.
     """
     sales = SHEET.worksheet("sales")
-    #column = sales.col_values(3)
-    #print(column)
 
     columns = []
-    for ind in range(1,7):
+    for ind in range(1, 7):
         column = sales.col_values(ind)
         columns.append(column[-5:])
+
     return columns
+
+def calculate_stock_data(data):
+    """
+    Calculate avg stock 
+    """
+    print("Calculating stock data... \n")
+    new_stock_data = []
+    for column in data:
+        int_column = [int(num) for num in column]
+        average = sum(int_column) / len(int_column)
+        stock_num = average * 1.1
+        new_stock_data.append(stock_num)
+        print(new_stock_data)
+
 
 def main():
     """
